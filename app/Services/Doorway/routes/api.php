@@ -23,6 +23,7 @@ Route::group(['prefix' => 'doorway'], function() {
     //
     Route::post('/create-gate-pass', [ApiController::class, 'create_gate_pass']);
     Route::get('/visit-list', [ApiController::class, 'visit_list']);
+    Route::post('/approve-visit', [ApiController::class, 'approve_visit']);
 
     // Route::middleware('auth:api')->get('/user', function (Request $request) {
     //     return $request->user();
