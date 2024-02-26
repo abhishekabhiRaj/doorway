@@ -9,7 +9,7 @@ function fetchVisitorList() {
             if(data.data.length>0){
                 data.data.forEach((item, i)=>{
                     console.log(i)
-                    var xmlCard = (`<section class='doorway-pr-card' id='${i}'><div class='doorway-pr-card--details'><img src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png' /><div class='ms-2'><p class='m-0 doorway-font-regular'>${item.visitor_name}</p><p class='m-0'>To Meet : ${item.person_to_meet}</p><p class='m-0'>Purpose : ${item.purpose}</p></div></div><div class='doorway-pr-card--actions mt-2' id='${i}'><section class='hvr-bounce-in'><i class='bi bi-check'></i></section><section class='hvr-bounce-in'><span style='font-size: 17px;'>    x</span></section>               <section class='hvr-bounce-in view-visitor-detail' id='view-visitor-detail${i}'>                    <i class='bi bi-eye' style='font-size: 16px;'></i>             </section>                <section class='hvr-bounce-in'>                    <i class='bi bi-pencil-square' style='font-size: 14px;'></i>                </section>            </div></section>`)
+                    var xmlCard = (`<section class='doorway-pr-card' id='${i}'><div class='doorway-pr-card--details'><img src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png' /><div class='ms-2'><p class='m-0 doorway-font-regular'>${item.visitor_name}</p><p class='m-0'>To Meet : ${item.person_to_meet}</p><p class='m-0'>Purpose : ${item.purpose}</p></div></div><div class='doorway-pr-card--actions mt-2' id='${i}'><section class='hvr-bounce-in' id='approval-btn${i}'><i class='bi bi-check'></i></section><section class='hvr-bounce-in'><span style='font-size: 17px;'>    x</span></section>               <section class='hvr-bounce-in view-visitor-detail' id='view-visitor-detail${i}'>                    <i class='bi bi-eye' style='font-size: 16px;'></i>             </section>                <section class='hvr-bounce-in'>                    <i class='bi bi-pencil-square' style='font-size: 14px;'></i>                </section>            </div></section>`)
                     var doc = new DOMParser().parseFromString(xmlCard, "text/html");
                     mainCardDiv.append(doc.body.getElementsByClassName("doorway-pr-card"));
                     $(`#view-visitor-detail${i}`).on('click',()=>{
@@ -31,10 +31,18 @@ function fetchVisitorList() {
                                 </ul>
                             </div>
                         </section>
-                    </div>`);
+                        </div>`);
                         let doc = new DOMParser().parseFromString(htmlVisitor, "text/html");
                         visitor_detail_modal.append(doc.body.getElementsByClassName("detail"))
                         $('#visit-view-modal').modal('show');
+                    });
+                    $(`#approval-btn${i}`).on('click',()=>{
+                        $.post("http://localhost/Doorway/public/api/doorway/approve-visit",
+                            {"id": item.id, "acceptance": "yes"} ,
+                            function(data,status){
+
+                            }
+                        );
                     });
                 });
 

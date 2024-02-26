@@ -17,10 +17,21 @@ class ApproveVisitJob extends Job
 
     public function handle(Request $request)
     {
-        // $visitor = Visitors::all();
-        return ResponseFactory::json([
-            'code' => 200,
-            'message' => 'Approved',
-        ]);
+        $visitor = Visitors::where('id', $request->id)->first();
+        if(isset($visitor)){
+            $acceptance = $request->acceptance;
+            $visitor->visit_accepted = $acceptance;
+            $visitor->save();
+            $messg = $acceptance == "no" ?"Visit Rejected Successfully" : "Visit Accepted Successfully";
+            return ResponseFactory::json([
+                'code' => 200,
+                'message' => $messg,
+            ]);
+        }else{
+            return ResponseFactory::json([
+                'code' => 400,
+               'message' => 'Wrong Visitor ID',
+            ]);
+        }
     }
 }
